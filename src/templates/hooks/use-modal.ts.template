@@ -1,0 +1,31 @@
+"use client";
+import { useQueryState, parseAsString } from "nuqs";
+import { useTransition } from "react";
+
+const UseModal = ({ key }: { key: string }) => {
+  const [isOpenTransition, startTransition] = useTransition();
+
+  const [id, setId] = useQueryState(
+    key,
+    parseAsString.withOptions({ startTransition, clearOnDefault: true })
+  );
+
+  const open = ({ id }: { id: string }) => {
+    setId(id);
+  };
+
+  const close = () => {
+    setTimeout(() => {
+      setId(null);
+    }, 500);
+  };
+  return {
+    id,
+    isOpenTransition,
+    setId,
+    open,
+    close,
+  };
+};
+
+export default UseModal;

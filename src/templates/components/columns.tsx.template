@@ -1,0 +1,68 @@
+import { ColumnDef } from "@tanstack/react-table";
+import {
+  DropdownMenu,
+  DropdownMenuItem,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { EllipsisVertical } from "lucide-react";
+import useModal from "@/hooks/use-modal";
+import { Button } from "@/components/ui/button";
+import { KEY_FORM_{{modelNameUpperCase}}_UPDATE,KEY_FORM_{{modelNameUpperCase}}_DELETE } from "../constants";
+
+import { ColumnHeaderSort } from "@/components/column-header-sort";
+import { {{modelName}} } from "@/models/{{modelNameKebabCase}}";
+
+const ColumnDropdownMenu = ({ id }: { id: string }) => {
+  const { open: openEdit } = useModal({ key: KEY_FORM_{{modelNameUpperCase}}_UPDATE });
+  const { open: openDelete } = useModal({ key: KEY_FORM_{{modelNameUpperCase}}_DELETE });
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="outline" size="icon">
+          <EllipsisVertical />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="w-56">
+        <DropdownMenuLabel>Menu</DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem
+          onClick={() => {
+            openEdit({ id });
+          }}
+        >
+          Edit
+        </DropdownMenuItem>
+        <DropdownMenuItem
+          onClick={() => {
+            openDelete({ id });
+          }}
+        >
+          Delete
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+};
+
+export const columns: ColumnDef<{{modelName}}>[] = [
+  {
+    header: "MenU",
+    id: "menu_id",
+    enableHiding: false,
+    accessorKey: "{{primaryKey}}",
+    cell: info => {
+      return <ColumnDropdownMenu id={info.getValue()!.toString()} />;
+    },
+  },
+{{#each fields}}
+  {
+    meta: "{{label}}",
+    header: "{{name}}"
+    accessorKey: "{{name}}",
+  },
+{{/each}}
+];

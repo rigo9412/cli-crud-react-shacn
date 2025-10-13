@@ -1,0 +1,30 @@
+import { useQuery } from "@tanstack/react-query";
+import { client } from "@/lib/rpc";
+import { KEY_{{SINGULAR_CONSTANT}} } from "../constants";
+import { toast } from "sonner";
+
+export const UseGet{{ENTITY_NAME}} = ({ id }: { id: string | undefined | null }) => {
+  const query = useQuery({
+    queryKey: [KEY_{{SINGULAR_CONSTANT}}, id],
+    queryFn: async () => {
+      if (id === null || id === undefined) {
+        return null;
+      }
+
+      const response = await client.api.{{RESOURCE_NAME}}[":id"].$get({
+        param: {
+          id: id,
+        },
+      });
+      const data = await response.json();
+      if (!response.ok || data.error) {
+        toast.error(data?.error || "Error to find {{ENTITY_NAME}}")
+        return null;
+      }
+
+      return data.data;
+    },
+  });
+
+  return query;
+};

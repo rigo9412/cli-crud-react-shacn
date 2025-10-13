@@ -1,0 +1,37 @@
+import { useQuery } from "@tanstack/react-query";
+import { client } from "@/lib/rpc";
+
+import { KEY_{{CONSTANT_NAME}} } from "../constants";
+
+import { toast } from "sonner";
+import { {{TYPE_NAME}} } from "@/models/{{MODEL_NAME}}";
+
+export type TableFilter = {
+  search: string;
+};
+
+export const UseGet{{ENTITY_NAME}} = ({ search }: TableFilter) => {
+  const query = useQuery({
+    queryKey: [KEY_{{CONSTANT_NAME}}, search ?? undefined],
+    queryFn: async () => {
+      const response = await client.api.{{RESOURCE_NAME}}.$get({
+        query: {
+          search: search ?? undefined,
+        },
+      });
+      const data = await response.json();
+      if (!response.ok || data.error) {
+        throw new Error(data?.error || "Error to find {{ENTITY_NAME}}");
+
+        return null;
+      }
+
+      return {
+        data: data.data as {{TYPE_NAME}}[],
+        total: data.data?.length ?? 0,
+      };
+    },
+  });
+
+  return query;
+};

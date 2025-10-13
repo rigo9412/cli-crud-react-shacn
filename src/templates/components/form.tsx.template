@@ -1,0 +1,80 @@
+import { z } from "zod";
+import { {{modelName}}, {{modelNameCamelCase}}Schema } from "../types";
+import { Button } from "@/components/ui/button";
+import { useForm } from "react-hook-form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Textarea } from "@/components/ui/textarea";
+
+export const Form{{modelName}} = ({
+  init{{modelName}},
+  isLoading,
+  submit,
+  onClose
+}: {
+  init{{modelName}}: {{modelName}} | null | undefined;
+  isLoading: boolean;
+  submit: ({{modelNameCamelCase}}: {{modelName}}) => void;
+  onClose: () => void;
+}) => {
+  const form = useForm({
+    defaultValues: init{{modelName}} ?? {},
+    resolver: zodResolver({{modelNameCamelCase}}Schema),
+  });
+
+  const onSubmitForm = (values: z.infer<typeof {{modelNameCamelCase}}Schema>) => {
+    submit(values);
+  };
+
+  return (
+    <Form {...form}>
+      <form
+        onSubmit={form.handleSubmit(onSubmitForm)}
+        encType="multipart/form-data"
+        className="flex flex-col gap-4 h-[50vh]"
+      >
+        {{#each fields}}
+        <FormField
+          name="{{name}}"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>{{label}}</FormLabel>
+              <FormControl>
+                {{#if isTextarea}}
+                <Textarea {...field} value={field.value || ""} />
+                {{else}}
+                <Input {...field} type="{{inputType}}" {{#if readOnly}}readOnly={true}{{/if}} />
+                {{/if}}
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        {{/each}}
+
+        <div className="flex justify-end gap-2 w-full">
+          <Button 
+            type="button" 
+            variant={"ghost"} 
+            isLoading={isLoading} 
+            onClick={onClose}
+          >
+            Cerrar
+          </Button>
+          <Button type="submit" isLoading={isLoading}>
+            Guardar
+          </Button>
+        </div>
+      </form>
+    </Form>
+  );
+};

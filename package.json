@@ -1,0 +1,31 @@
+{
+  "name": "crud-cli-generator",
+  "version": "1.0.0",
+  "description": "A CLI tool to generate CRUD components, hooks, and types with templates.",
+  "main": "src/index.ts",
+  "bin": {
+    "crud-cli": "./bin/cli.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "node ./bin/cli.js"
+  },
+  "dependencies": {
+    "commander": "^14.0.1",
+    "zod": "^3.11.6"
+  },
+  "devDependencies": {
+    "typescript": "^4.5.4",
+    "ts-node": "^10.4.0",
+    "tsconfig-paths": "^4.0.0",
+    "@types/bun": "latest"
+  },
+  "keywords": [
+    "cli",
+    "crud",
+    "generator",
+    "typescript"
+  ],
+  "author": "Your Name",
+  "license": "MIT"
+}

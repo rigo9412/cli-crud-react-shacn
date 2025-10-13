@@ -1,0 +1,41 @@
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { InferRequestType, InferResponseType } from "hono";
+import { client } from "@/lib/rpc";
+import { KEY_{{SINGULAR_CONSTANT}}, KEY_{{CONSTANT_NAME}} } from "../constants";
+import { toast } from "sonner";
+
+type ResponseType = InferResponseType<
+  (typeof client.api.{{RESOURCE_PATH}})[":id"]["$put"],
+  200
+>;
+type RequestType = InferRequestType<
+  (typeof client.api.{{RESOURCE_PATH}})[":id"]["$put"]
+>;
+
+export const UseEdit{{ENTITY_NAME}} = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation<ResponseType, Error, RequestType>({
+    mutationFn: async ({ json, param }) => {
+      const response = await client.api.{{RESOURCE_PATH}}[":id"]["$put"]({
+        json,
+        param,
+      });
+      const data = await response.json();
+      if (!response.ok || data.error) {
+        throw new Error(data?.error || "Error updating {{ENTITY_NAME}}");
+      }
+      return data;
+    },
+    onSuccess: () => {
+      toast("Se ha actualizado {{ENTITY_NAME}}");
+      queryClient.invalidateQueries({ queryKey: [KEY_{{CONSTANT_NAME}}] });
+      queryClient.invalidateQueries({
+        queryKey: [KEY_{{SINGULAR_CONSTANT}}],
+      });
+    },
+    onError: error => {
+      toast("Error al actualizar {{ENTITY_NAME}}");
+    },
+  });
+};

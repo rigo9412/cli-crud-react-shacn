@@ -1,0 +1,77 @@
+"use client";
+import { Suspense } from "react";
+import { DialogForm } from "@/components/dialog-form";
+import { KEY_FORM_{{modelNameUpperCase}}_CREATE } from "../constants";
+import useModal from "@/hooks/use-modal";
+import { Form{{modelName}} } from "./form";
+import { {{modelName}} } from "../types";
+import { UseCreate{{modelName}} } from "../api/use-create-{{modelNameKebabCase}}";
+import { useTranslations } from 'next-intl';
+
+export const ModalContent = ({hasPermission} : {hasPermission: boolean}) => {
+  const { id, close } = useModal({ key: KEY_FORM_{{modelNameUpperCase}}_CREATE });
+  const { mutate, isPending: isLoadingUpdate, isError, error } = UseCreate{{modelName}}();
+  const t = useTranslations('{{modelNamePlural}}');
+  
+  if (id === null) {
+    return null;
+  }
+  
+  const onSubmit = async (value: {{modelName}}) => {
+    mutate(
+      { json: value },
+      {
+        onSuccess: () => {
+          close();
+        },
+      }
+    );
+  };
+
+  return (
+    <DialogForm
+      title={t('create')}
+      open={id != null}
+      onOpenChange={close}
+      size="lg"
+      data-testid="modal-create-{{modelNameKebabCase}}"
+    >
+      {isError && (
+        <div data-testid="error-create-{{modelNameKebabCase}}">
+          {t('errorCreateWithMessage', { message: error.message })}
+        </div>
+      )}
+      {!hasPermission && (
+        <div data-testid="no-permission-create">
+          {t('noPermissionCreate')}
+        </div>
+      )}
+      { hasPermission && (
+      <Form{{modelName}}
+        submit={onSubmit}
+        isLoading={isLoadingUpdate}
+        onClose={close}
+        init{{modelName}}={ {{#if defaultValues}}{{defaultValues}}{{else}}{
+          {{#each fields}}
+          {{name}}: {{#if defaultValue}}{{defaultValue}}{{else}}""{{/if}},
+          {{/each}}
+        }{{/if}} }
+      />)}
+    </DialogForm>
+  );
+};
+
+export const ModalCreate{{modelName}} = ({hasPermission} : {hasPermission: boolean}) => {
+  const common = useTranslations('Common');
+  return (
+    <Suspense 
+      fallback={
+        <div data-testid="loading-create-{{modelNameKebabCase}}">
+          {common('loading')}
+        </div>
+      }
+    >
+      <ModalContent hasPermission={hasPermission} />
+    </Suspense>
+  );
+};
