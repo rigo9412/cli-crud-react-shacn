@@ -6,14 +6,13 @@ import { Button } from "@/components/ui/button";
 import useModal from "@/hooks/use-modal";
 import { UseGet{{modelName}} } from "../api/use-get-{{modelNameKebabCase}}-by-id";
 import { UseDelete{{modelName}} } from "../api/use-delete-{{modelNameKebabCase}}";
-import { useTranslations } from "next-intl";
+ 
 
 const ModalContent = ({ hasPermission }: { hasPermission: boolean }) => {
   const { id, close } = useModal({ key: KEY_MODAL_{{modelNameUpperCase}}_DELETE });
   const { data: {{modelNameCamelCase}}, isLoading } = UseGet{{modelName}}({ id });
   const { mutate, isPending: isLoadingDelete } = UseDelete{{modelName}}();
-  const t = useTranslations("{{modelNamePlural}}");
-  const common = useTranslations("Common");
+  
 
   if (id === null) {
     return null;
@@ -33,27 +32,25 @@ const ModalContent = ({ hasPermission }: { hasPermission: boolean }) => {
   return (
     <DialogForm
       size="lg"
-      title={t("delete")}
+      title="Delete {{modelName}}"
       open={id != null}
       onOpenChange={close}
       data-testid="modal-delete-{{modelNameKebabCase}}"
     >
       {isLoading && (
-        <div data-testid="loading-{{modelNameKebabCase}}-data">{common("loading")}</div>
+        <div data-testid="loading-{{modelNameKebabCase}}-data">Loading...</div>
       )}
-      {!hasPermission && (
-        <div data-testid="no-permission-delete">{t("noPermissionDelete")}</div>
-      )}
-      {hasPermission && (
+  
+    
         <div data-testid="delete-confirmation-container">
           <h1
             className="text-xl font-bold"
             data-testid="delete-confirmation-title"
           >
-            {t("confirmDelete", { name: {{modelNameCamelCase}}?.{{displayField}} || common("unknown") })}
+            Confirmation Delete {{modelName}}
           </h1>
           <p className="text-gray-600" data-testid="delete-warning-text">
-            {common("deleteWarning")}
+            Are you sure you want to delete this {{modelNameKebabCase}}? This action cannot be undone.
           </p>
           <div className="flex w-full justify-end gap-2">
             <Button
@@ -61,7 +58,7 @@ const ModalContent = ({ hasPermission }: { hasPermission: boolean }) => {
               variant={"outline"}
               data-testid="btn-cancel-delete"
             >
-              {common("cancel")}
+              Cancel
             </Button>
             <Button
               isLoading={isLoadingDelete}
@@ -69,28 +66,23 @@ const ModalContent = ({ hasPermission }: { hasPermission: boolean }) => {
               variant={"destructive"}
               data-testid="btn-confirm-delete"
             >
-              {common("delete")}
+              Delete
             </Button>
           </div>
         </div>
-      )}
+      
     </DialogForm>
   );
 };
 
-export const ModalDelete{{modelName}} = ({
-  hasPermission,
-}: {
-  hasPermission: boolean;
-}) => {
-  const common = useTranslations("Common");
+export const ModalDelete{{modelName}} = () => {
   return (
     <Suspense
       fallback={
-        <div data-testid="loading-delete-{{modelNameKebabCase}}">{common("loading")}</div>
+        <div data-testid="loading-delete-{{modelNameKebabCase}}">Loading...</div>
       }
     >
-      <ModalContent hasPermission={hasPermission} />
+      <ModalContent  />
     </Suspense>
   );
 };

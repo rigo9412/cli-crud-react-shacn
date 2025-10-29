@@ -2,16 +2,14 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { InferRequestType, InferResponseType } from "hono";
 import { client } from "@/lib/rpc";
 import { {{CONSTANT_KEY}} } from "../constants";
-import { toast } from 'sonner';
-import { useTranslations } from "next-intl";
- 
+import { toast } from 'sonner'; 
 
 type ResponseType = InferResponseType<typeof client.api.{{RESOURCE_PLURAL}}["$post"], 200>;
 type RequestType = InferRequestType<typeof client.api.{{RESOURCE_PLURAL}}["$post"]>;
 
 const useCreate{{RESOURCE_SINGULAR}} = () => {
   const queryClient = useQueryClient();
-  const t = useTranslations("Common");
+ 
 
   return useMutation<ResponseType, Error, RequestType>({
     mutationFn: async ({ json }) => {
@@ -25,11 +23,11 @@ const useCreate{{RESOURCE_SINGULAR}} = () => {
         return result;
     },
     onSuccess: () => {
-      toast(t("created"));
+      toast("Created successfully!");
       queryClient.invalidateQueries({ queryKey: [{{CONSTANT_KEY}}] });
     },
     onError: (error) => {
-      toast.error(error.message ||  t("error.generic"));
+      toast.error(error.message || "Error creating {{RESOURCE_SINGULAR}}");
     },
   });
 };

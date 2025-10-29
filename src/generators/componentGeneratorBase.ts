@@ -2,7 +2,7 @@ import { renderTemplate } from '../utils/templateEngine';
 import { writeFileSync } from 'fs';
 import { join } from 'path';
 
-export function generateComponent(componentName: string, model: any, parsedModel: { id: string; name: string; }) {
+export function generateComponentBase(componentName: string, model: any,path: string,) {
     const templatesPath = join(__dirname, '../templates/components');
     const componentTemplate = `${componentName}.tsx.template`;
     
@@ -11,6 +11,7 @@ export function generateComponent(componentName: string, model: any, parsedModel
         model,
     };
 
+    const outputPath = join(process.cwd(), path ? `${path}/${componentName}` : `src/components/${componentName}`);
     const output = renderTemplate(join(templatesPath, componentTemplate), templateData);
-    writeFileSync(join(process.cwd(), `src/features/${componentName}`, `${componentName}.tsx`), output);
+    writeFileSync(join(outputPath, `${componentName}.tsx`), output);
 }

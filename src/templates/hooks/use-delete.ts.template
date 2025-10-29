@@ -11,7 +11,7 @@ type RequestType = InferRequestType<typeof client.api.{{RESOURCE_PLURAL}}[":id"]
 
 export const UseDelete{{RESOURCE_SINGULAR}} = () => {
   const queryClient = useQueryClient();
-  const t = useTranslations("Common");
+  
 
   return useMutation<ResponseType, Error, RequestType>({
     mutationFn: async ({ param }) => {
@@ -19,16 +19,16 @@ export const UseDelete{{RESOURCE_SINGULAR}} = () => {
       
         const result = await response.json();
         if (!response.ok || result.error) {
-            throw new Error(result.error || t("error.generic"));
+            throw new Error(result.error || "Error deleting {{RESOURCE_SINGULAR}}");
         }
         return result;
     },
     onSuccess: () => {
-      toast(t("deleted"));
+      toast("Deleted successfully!");
       queryClient.invalidateQueries({ queryKey: [{{CONSTANT_KEY}}] });
     },
     onError: () => {
-      toast.error(error.message ||  t("error.generic"));
+      toast.error(error.message || "Error deleting {{RESOURCE_SINGULAR}}");
     },
   });
 };

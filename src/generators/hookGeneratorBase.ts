@@ -2,17 +2,13 @@ import fs from 'fs';
 import path from 'path';
 import { renderTemplate } from '../utils/templateEngine';
 
-export const generateHook = (hookName: string, modelName: string, parsedModel: { id: string; name: string; }) => {
+export const generateHookBase = (hookName: string, modelName: string, parsedModel: { id: string; name: string; }) => {
     const templatesDir = path.join(__dirname, '../templates/hooks');
-    const outputDir = path.join(process.cwd(), `src/features/${modelName}/api`);
+    const outputDir = path.join(process.cwd(), 'src/hooks');
 
     const templateFiles = [
-        'use-create.ts.template',
-        'use-update.ts.template',
-        'use-delete.ts.template',
-        'use-get-by-id.ts.template',
-        'use-get.ts.template',
-        'use-get.ts.template',
+        'use-modal.ts.template',
+        'use-table-filters.ts.template',
     ];
 
     templateFiles.forEach(templateFile => {

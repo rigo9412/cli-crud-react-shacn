@@ -1,0 +1,30 @@
+"use client";
+import dayjs from "dayjs";
+import { useQueryStates, parseAsString } from "nuqs";
+import { startTransition } from "react";
+
+export const useTableFilters = () => {
+  return useQueryStates(
+    {
+      search: parseAsString.withDefault("").withOptions({ startTransition, clearOnDefault: true }),
+      page: parseAsString.withDefault("0").withOptions({ startTransition, clearOnDefault: true }),
+      limit: parseAsString
+        .withDefault("200")
+        .withOptions({ startTransition, clearOnDefault: true }),
+      sortColumn: parseAsString
+        .withDefault("reference")
+        .withOptions({ startTransition, clearOnDefault: true }),
+      sortDirection: parseAsString
+        .withDefault("desc")
+        .withOptions({ startTransition, clearOnDefault: true }),
+
+      dateFrom: parseAsString
+        .withDefault(dayjs().add(-7, "day").format("YYYY-MM-DD"))
+        .withOptions({ startTransition, clearOnDefault: true }),
+      dateTo: parseAsString
+        .withDefault(dayjs().format("YYYY-MM-DD"))
+        .withOptions({ startTransition, clearOnDefault: true }),
+    },
+    {}
+  );
+};
