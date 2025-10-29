@@ -8,14 +8,13 @@ import { {{modelName}} } from "../types";
 import { UseEdit{{modelName}} } from "../api/use-edit-{{modelNameKebabCase}}";
 import { UseGet{{modelName}} } from "../api/use-get-{{modelNameKebabCase}}-by-id";
 import { Badge } from "@/components/ui/badge";
-import { useTranslations } from 'next-intl';
+ 
 
-export const ModalContent = ({hasPermission} : {hasPermission: boolean}) => {
+export const ModalContent = () => {
   const { id, close } = useModal({ key: KEY_FORM_{{modelNameUpperCase}}_UPDATE });
   const { data: {{modelNameCamelCase}}, isLoading } = UseGet{{modelName}}({ id });
   const { mutate, isPending: isLoadingUpdate } = UseEdit{{modelName}}();
-  const t = useTranslations('{{modelNamePlural}}');
-  const common = useTranslations('Common');
+ 
 
   if (id === null) {
     return <></>;
@@ -34,15 +33,7 @@ export const ModalContent = ({hasPermission} : {hasPermission: boolean}) => {
 
   return (
     <DialogForm
-      title={t('edit')}
-      badges={
-        <Badge 
-          variant="secondary"
-          data-testid="{{modelNameKebabCase}}-id-badge"
-        >
-          {id}
-        </Badge>
-      }
+      title={'Edit ' + {{modelName}}}
       open={id != null}
       onOpenChange={close}
       size="lg"
@@ -50,16 +41,11 @@ export const ModalContent = ({hasPermission} : {hasPermission: boolean}) => {
     >
       {isLoading && (
         <div data-testid="loading-{{modelNameKebabCase}}-data">
-          {common('loading')}
-        </div>
-      )}
-      {!hasPermission && (
-        <div data-testid="no-permission-edit">
-          {t('noPermissionEdit')}
+          Loading...
         </div>
       )}
 
-      {!isLoading && hasPermission && (
+      {!isLoading && (
         <Form{{modelName}}
           submit={onSubmit}
           isLoading={isLoadingUpdate}
@@ -75,17 +61,16 @@ export const ModalContent = ({hasPermission} : {hasPermission: boolean}) => {
   );
 };
 
-export const ModalEdit{{modelName}} = ({hasPermission} : {hasPermission: boolean}) => {
-  const common = useTranslations('Common');
+export const ModalEdit{{modelName}} = () => {
   return (
     <Suspense 
       fallback={
         <div data-testid="loading-edit-{{modelNameKebabCase}}">
-          {common('loading')}
+          Loading...
         </div>
       }
     >
-      <ModalContent  hasPermission={hasPermission} />
+      <ModalContent    />
     </Suspense>
   );
 };

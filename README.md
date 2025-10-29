@@ -10,6 +10,8 @@ The CRUD CLI Generator is a command-line interface tool designed to streamline t
 - **Custom Hooks**: Automatically generate hooks for fetching, creating, updating, and deleting data.
 - **TypeScript Support**: All generated files are TypeScript-based, ensuring type safety throughout your application.
 - **Zod Integration**: Use Zod for model validation, ensuring that your data adheres to defined schemas.
+- **Automatic Dependency Installation**: Automatically detects and installs required dependencies (hono, @tanstack/react-query, etc.)
+- **Package Manager Detection**: Supports npm, yarn, pnpm, and bun
 
 ## Installation
 
@@ -39,7 +41,29 @@ To generate CRUD components for a specific model, use the following command:
 node bin/cli.js generate <model-name>
 ```
 
-This will create the necessary components, hooks, and types based on the provided model.
+This will:
+1. Check if required dependencies are installed
+2. Automatically install missing dependencies (hono, @tanstack/react-query, react, react-dom)
+3. Generate the necessary components, hooks, and types based on the provided model
+
+#### Skip Automatic Installation
+
+If you want to skip the automatic dependency installation, use the `--skip-install` flag:
+
+```bash
+node bin/cli.js generate <model-name> --skip-install
+```
+
+## Required Dependencies
+
+The CLI automatically checks and installs these dependencies:
+
+- **hono**: Web framework for the API layer
+- **@tanstack/react-query**: Data fetching and caching library
+- **react**: React library
+- **react-dom**: React DOM library
+
+The CLI will detect your package manager (npm, yarn, pnpm, or bun) and use it to install missing dependencies.
 
 ## Project Structure
 

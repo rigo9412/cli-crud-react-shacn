@@ -1,23 +1,47 @@
 import fs from 'fs';
 import path from 'path';
 import { renderTemplate } from '../utils/templateEngine';
+import { ensureDirectoryExistence } from '../utils/fileManager';
 
 export const generateHookBase = (hookName: string, modelName: string, parsedModel: { id: string; name: string; }) => {
-    const templatesDir = path.join(__dirname, '../templates/hooks');
-    const outputDir = path.join(process.cwd(), 'src/hooks');
+    try {
+        const templatesDir = path.join(__dirname, '../templates/hooks');
+        const outputDir = path.join(process.cwd(), 'src/hooks');
 
-    const templateFiles = [
-        'use-modal.ts.template',
-        'use-table-filters.ts.template',
-    ];
+        // Ensure output directory exists
+        if (!fs.existsSync(outputDir)) {
+            fs.mkdirSync(outputDir, { recursive: true });
+        }
 
-    templateFiles.forEach(templateFile => {
+        // Map hook names to their template files
+        const templateMap: Record<string, string> = {
+            'use-modal': 'use-modal.ts.template',
+            'use-table-filters': 'use-table-filters.ts.template',
+        };
+
+        const templateFile = templateMap[hookName];
+        
+        if (!templateFile) {
+            console.warn(`  ⚠️  Warning: No template found for hook: ${hookName}`);
+            return;
+        }
+
         const templatePath = path.join(templatesDir, templateFile);
-        const outputPath = path.join(outputDir, `${hookName}${templateFile.replace('.template', '.ts')}`);
+        
+        if (!fs.existsSync(templatePath)) {
+            throw new Error(`Template file not found: ${templatePath}`);
+        }
+
+        const outputPath = path.join(outputDir, `${hookName}.ts`);
 
         const templateContent = fs.readFileSync(templatePath, 'utf-8');
-        const renderedContent = renderTemplate(templateContent, { hookName, modelName });
+        const renderedContent = renderTemplate(templateContent, { hookName, modelName, parsedModel });
 
         fs.writeFileSync(outputPath, renderedContent);
-    });
+        console.log(`  ✓ Generated: ${outputPath}`);
+        
+    } catch (error) {
+        console.error(`  ✗ Error generating hook ${hookName}:`, error);
+        throw error;
+    }
 };

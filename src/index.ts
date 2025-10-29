@@ -16,8 +16,9 @@ program
 program
   .command('generate <name>')
   .description('Generate CRUD components, hooks, and types for a given name')
-  .action((name) => {
-    generateCRUD(name);
+  .option('--skip-install', 'Skip automatic dependency installation')
+  .action((name, options) => {
+    generateCRUD(name, options.skipInstall || false);
   });
 
 program.parse(process.argv);

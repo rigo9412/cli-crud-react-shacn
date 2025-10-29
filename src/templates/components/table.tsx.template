@@ -9,8 +9,8 @@ import { useTableFilters } from "@/hooks/use-table-filters";
 import { useTranslations } from "next-intl";
 import { TableSkeletonSimple } from "@/components/ui/table-skeleton";
 
-export const TableContent = ({ permissions }: { permissions: string[] }) => {
-  const columns = useColumns({ permissions });
+export const TableContent = ( ) => {
+  const columns = useColumns();
   const [{ search, page, limit }, setFilters] = useTableFilters();
 
   const { data: {{modelNameCamelCasePlural}}, isLoading } = UseGet{{modelNamePlural}}({
@@ -47,16 +47,16 @@ export const TableContent = ({ permissions }: { permissions: string[] }) => {
   );
 };
 
-export const Table{{modelNamePlural}} = ({ permissions }: { permissions: string[] }) => {
-  const common = useTranslations("Common");
+export const Table{{modelNamePlural}} = ( ) => {
+ 
 
   return (
     <Suspense
       fallback={
-        <div data-testid="loading-table-{{modelNameKebabCasePlural}}">{common("loading")}</div>
+        <div data-testid="loading-table-{{modelNameKebabCasePlural}}">Loading...</div>
       }
     >
-      <TableContent permissions={permissions} />
+      <TableContent />
     </Suspense>
   );
 };

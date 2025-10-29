@@ -1,16 +1,40 @@
 import { renderTemplate } from '../utils/templateEngine';
-import { writeFileSync } from 'fs';
+import { writeFileSync, existsSync, mkdirSync, readFileSync } from 'fs';
 import { join } from 'path';
 
-export function generateComponent(componentName: string, model: any, parsedModel: { id: string; name: string; }) {
-    const templatesPath = join(__dirname, '../templates/components');
-    const componentTemplate = `${componentName}.tsx.template`;
-    
-    const templateData = {
-        componentName,
-        model,
-    };
+export function generateComponent(componentName: string, modelName: string, parsedModel: { id: string; name: string; }) {
+    try {
+        const templatesPath = join(__dirname, '../templates/components');
+        const componentTemplate = `${componentName}.tsx.template`;
+        const templateFullPath = join(templatesPath, componentTemplate);
+        
+        if (!existsSync(templateFullPath)) {
+            console.warn(`  ⚠️  Warning: Template not found: ${templateFullPath}`);
+            return;
+        }
 
-    const output = renderTemplate(join(templatesPath, componentTemplate), templateData);
-    writeFileSync(join(process.cwd(), `src/features/${componentName}`, `${componentName}.tsx`), output);
+        const templateData = {
+            componentName,
+            modelName,
+            parsedModel,
+        };
+
+        const outputDir = join(process.cwd(), `src/features/${modelName}/components`);
+        
+        // Ensure output directory exists
+        if (!existsSync(outputDir)) {
+            mkdirSync(outputDir, { recursive: true });
+        }
+
+        const templateContent = readFileSync(templateFullPath, 'utf-8');
+        const output = renderTemplate(templateContent, templateData);
+        const outputFilePath = join(outputDir, `${componentName}.tsx`);
+        
+        writeFileSync(outputFilePath, output);
+        console.log(`  ✓ Generated: ${componentName}.tsx`);
+        
+    } catch (error) {
+        console.error(`  ✗ Error generating component ${componentName}:`, error);
+        throw error;
+    }
 }

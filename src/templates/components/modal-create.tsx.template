@@ -6,12 +6,12 @@ import useModal from "@/hooks/use-modal";
 import { Form{{modelName}} } from "./form";
 import { {{modelName}} } from "../types";
 import { UseCreate{{modelName}} } from "../api/use-create-{{modelNameKebabCase}}";
-import { useTranslations } from 'next-intl';
+ 
 
-export const ModalContent = ({hasPermission} : {hasPermission: boolean}) => {
+export const ModalContent = () => {
   const { id, close } = useModal({ key: KEY_FORM_{{modelNameUpperCase}}_CREATE });
   const { mutate, isPending: isLoadingUpdate, isError, error } = UseCreate{{modelName}}();
-  const t = useTranslations('{{modelNamePlural}}');
+  
   
   if (id === null) {
     return null;
@@ -30,7 +30,7 @@ export const ModalContent = ({hasPermission} : {hasPermission: boolean}) => {
 
   return (
     <DialogForm
-      title={t('create')}
+      title={'Create ' + {{modelName}}}
       open={id != null}
       onOpenChange={close}
       size="lg"
@@ -38,15 +38,11 @@ export const ModalContent = ({hasPermission} : {hasPermission: boolean}) => {
     >
       {isError && (
         <div data-testid="error-create-{{modelNameKebabCase}}">
-          {t('errorCreateWithMessage', { message: error.message })}
+          {error?.message}
         </div>
       )}
-      {!hasPermission && (
-        <div data-testid="no-permission-create">
-          {t('noPermissionCreate')}
-        </div>
-      )}
-      { hasPermission && (
+     
+  
       <Form{{modelName}}
         submit={onSubmit}
         isLoading={isLoadingUpdate}
@@ -56,22 +52,22 @@ export const ModalContent = ({hasPermission} : {hasPermission: boolean}) => {
           {{name}}: {{#if defaultValue}}{{defaultValue}}{{else}}""{{/if}},
           {{/each}}
         }{{/if}} }
-      />)}
+      /> 
     </DialogForm>
   );
 };
 
-export const ModalCreate{{modelName}} = ({hasPermission} : {hasPermission: boolean}) => {
-  const common = useTranslations('Common');
+export const ModalCreate{{modelName}} = ({) => {
+ 
   return (
     <Suspense 
       fallback={
         <div data-testid="loading-create-{{modelNameKebabCase}}">
-          {common('loading')}
+          Loading...
         </div>
       }
     >
-      <ModalContent hasPermission={hasPermission} />
+      <ModalContent   />
     </Suspense>
   );
 };
