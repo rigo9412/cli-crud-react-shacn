@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { renderTemplate } from '../utils/templateEngine';
+import { getModelNameVariations } from '../utils/nameTransformers';
 
 
 export const generateHookBase = (hookName: string, modelName: string, parsedModel: {   name: string; }) => {
@@ -34,8 +35,15 @@ export const generateHookBase = (hookName: string, modelName: string, parsedMode
 
         const outputPath = path.join(outputDir, `${hookName}.ts`);
 
+        // Get all name variations for template replacement
+        const nameVariations = getModelNameVariations(modelName);
+
         const templateContent = fs.readFileSync(templatePath, 'utf-8');
-        const renderedContent = renderTemplate(templateContent, { hookName, modelName, parsedModel });
+        const renderedContent = renderTemplate(templateContent, { 
+            hookName, 
+            ...nameVariations, 
+            parsedModel 
+        });
 
         fs.writeFileSync(outputPath, renderedContent);
         console.log(`  ✓ Generated: ${outputPath}`);

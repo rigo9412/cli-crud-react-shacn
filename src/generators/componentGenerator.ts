@@ -1,6 +1,7 @@
 import { renderTemplate } from '../utils/templateEngine';
 import { writeFileSync, existsSync, mkdirSync, readFileSync } from 'fs';
 import { join } from 'path';
+import { getModelNameVariations } from '../utils/nameTransformers';
 
 export function generateComponent(componentName: string, modelName: string, parsedModel: {   name: string; }) {
     try {
@@ -13,9 +14,12 @@ export function generateComponent(componentName: string, modelName: string, pars
             return;
         }
 
+        // Get all name variations for template replacement
+        const nameVariations = getModelNameVariations(modelName);
+
         const templateData = {
             componentName,
-            modelName,
+            ...nameVariations,
             parsedModel,
         };
 
