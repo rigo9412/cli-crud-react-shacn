@@ -1,9 +1,9 @@
 import fs from 'fs';
 import path from 'path';
 import { renderTemplate } from '../utils/templateEngine';
-import { ensureDirectoryExistence } from '../utils/fileManager';
 
-export const generateHookBase = (hookName: string, modelName: string, parsedModel: { id: string; name: string; }) => {
+
+export const generateHookBase = (hookName: string, modelName: string, parsedModel: {   name: string; }) => {
     try {
         const templatesDir = path.join(__dirname, '../templates/hooks');
         const outputDir = path.join(process.cwd(), 'src/hooks');

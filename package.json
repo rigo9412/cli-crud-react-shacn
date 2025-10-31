@@ -7,18 +7,23 @@
     "crud-cli": "./bin/cli.js"
   },
   "scripts": {
-    "build": "tsc",
-    "start": "node ./bin/cli.js"
+    "build": "tsc && cp -r src/templates dist/templates",
+    "start": "node ./bin/cli.js",
+    "dev": "ts-node src/index.ts"
   },
   "dependencies": {
+    "@tanstack/react-query": "^5.90.5",
     "commander": "^14.0.1",
+    "hono": "^4.10.4",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
     "zod": "^3.11.6"
   },
   "devDependencies": {
-    "typescript": "^4.5.4",
+    "@types/bun": "latest",
     "ts-node": "^10.4.0",
     "tsconfig-paths": "^4.0.0",
-    "@types/bun": "latest"
+    "typescript": "^5.9.3"
   },
   "keywords": [
     "cli",

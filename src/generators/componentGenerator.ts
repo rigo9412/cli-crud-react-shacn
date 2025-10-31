@@ -2,7 +2,7 @@ import { renderTemplate } from '../utils/templateEngine';
 import { writeFileSync, existsSync, mkdirSync, readFileSync } from 'fs';
 import { join } from 'path';
 
-export function generateComponent(componentName: string, modelName: string, parsedModel: { id: string; name: string; }) {
+export function generateComponent(componentName: string, modelName: string, parsedModel: {   name: string; }) {
     try {
         const templatesPath = join(__dirname, '../templates/components');
         const componentTemplate = `${componentName}.tsx.template`;
