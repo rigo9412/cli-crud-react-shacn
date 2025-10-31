@@ -8,6 +8,7 @@ import { generateHookBase } from '../generators/hookGeneratorBase';
 import { generateComponentBase } from '../generators/componentGeneratorBase';
 import { ensureDependencies } from '../utils/dependencyManager';
 import { getAllRequiredDependencies } from '../config/dependencies';
+import { generateConstants } from '../generators/constantsGenerator';
 
 export const generateCRUD = (modelName: string, skipInstall: boolean = false) => {
     try {
@@ -21,7 +22,7 @@ export const generateCRUD = (modelName: string, skipInstall: boolean = false) =>
         }
         
         // Validate model file exists
-        const modelPath = join(__dirname, '../../models', `${modelName}.model.ts`);
+        const modelPath = join(process.cwd(), 'models', `${modelName}.model.ts`);
         if (!existsSync(modelPath)) {
             throw new Error(`Model file not found: ${modelPath}\nPlease create the model file first.`);
         }
@@ -36,15 +37,21 @@ export const generateCRUD = (modelName: string, skipInstall: boolean = false) =>
             throw new Error('Failed to parse model. Please check your model file format.');
         }
 
+        console.log('\n📝 Generating constants...');
+        generateConstants(modelName);
+
         console.log('\n📝 Generating base hooks...');
         generateHookBase('use-modal', modelName, parsedModel);
         generateHookBase('use-table-filters', modelName, parsedModel);
 
         console.log('🎨 Generating base components...');
         generateComponentBase('button', modelName, `src/components`);
-        generateComponentBase('dialog-form', modelName, `src/components`);
+        generateComponentBase('dialog-form', modelName, `src/components/ui`);
         generateComponentBase('dialog', modelName, `src/ui`);
         generateComponentBase('data-table', modelName, `src/ui`);
+
+        console.log('🔑 Generating constants...');
+        generateConstants(modelName);
 
         console.log('🔗 Generating API hooks...');
         // Generate hooks

@@ -6,6 +6,16 @@ export const REQUIRED_DEPENDENCIES = {
     runtime: [
         'hono',
         '@tanstack/react-query',
+        'sonner',
+        'react-hook-form',
+        '@hookform/resolvers',
+        'lucide-react',
+        'class-variance-authority',
+        'clsx',
+        'tailwind-merge',
+        'dayjs',
+        'nuqs',
+        'next-intl'
     ],
     // React dependencies
     react: [

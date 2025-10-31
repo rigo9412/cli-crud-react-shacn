@@ -27,7 +27,7 @@ export const UseDelete{{RESOURCE_SINGULAR}} = () => {
       toast("Deleted successfully!");
       queryClient.invalidateQueries({ queryKey: [{{CONSTANT_KEY}}] });
     },
-    onError: () => {
+    onError: (error) => {
       toast.error(error.message || "Error deleting {{RESOURCE_SINGULAR}}");
     },
   });

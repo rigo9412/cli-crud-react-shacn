@@ -30,7 +30,7 @@ export const ModalContent = () => {
 
   return (
     <DialogForm
-      title={'Create ' + {{modelName}}}
+      title={'Create {{modelName}}'}
       open={id != null}
       onOpenChange={close}
       size="lg"
@@ -57,7 +57,7 @@ export const ModalContent = () => {
   );
 };
 
-export const ModalCreate{{modelName}} = ({) => {
+export const ModalCreate{{modelName}} = () => {
  
   return (
     <Suspense 

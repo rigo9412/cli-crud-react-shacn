@@ -1,9 +1,9 @@
 import { z } from 'zod';
 
-export const ExampleSchema = z.object({
-  id: z.string(),
-  name: z.string().min(1),
-  description: z.string().optional(),
+export const {{modelNamePascalCase}}Schema = z.object({
+    {{#each fields}}
+    {{this.name}}: {{this.validation}},
+    {{/each}}
 });
 
-export type Example = z.infer<typeof ExampleSchema>;
+export type {{modelNamePascalCase}} = z.infer<typeof {{modelNamePascalCase}}Schema>;

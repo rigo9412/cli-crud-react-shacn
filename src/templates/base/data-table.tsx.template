@@ -179,7 +179,7 @@ export function DataTable<T>({data,manualPagination, currentPage = 0, pageSize, 
                   return (
                      <TableHead 
                         key={header.id}
-                        style={{
+                        style=\{{
                         
                           width: header.column.columnDef.size,
                           minWidth: header.column.columnDef.minSize,

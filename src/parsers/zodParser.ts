@@ -14,18 +14,16 @@ export interface ParsedModel {
     fields: ParsedField[];
 }
 
-export const parseModel = (modelContent: string): ParsedModel => {
+export const parseModel = (modelContent: string): ParsedModel | null => {
     // Extract the model name
-    const modelNameMatch = modelContent.match(/export const (\w+)Model/);
+    const modelNameMatch = modelContent.match(/export const (\w+)Schema/);
     if (!modelNameMatch) {
-        throw new Error('Could not find model name. Make sure your model exports a constant named <Name>Model');
+        throw new Error('Could not find model name. Make sure your model exports a constant named <Name>Schema');
     }
     const modelName = modelNameMatch[1];
 
     // Extract the z.object definition
-    // Remove newlines temporarily to make regex work without 's' flag
-    const singleLineContent = modelContent.replace(/\n/g, ' ');
-    const objectMatch = singleLineContent.match(/z\.object\(\{(.+?)\}\)/);
+    const objectMatch = modelContent.match(/z\.object\(\s*\{([\s\S]+?)\}\s*\)/);
     if (!objectMatch) {
         throw new Error('Could not find z.object definition in model file');
     }
@@ -34,18 +32,26 @@ export const parseModel = (modelContent: string): ParsedModel => {
     const fields: ParsedField[] = [];
 
     // Parse each field line
-    const fieldLines = fieldsContent.split('\n').filter(line => line.trim() && !line.trim().startsWith('//'));
+    const fieldLines = fieldsContent.split(',').filter(line => line.trim() && !line.trim().startsWith('//'));
     
     for (const line of fieldLines) {
-        const fieldMatch = line.match(/(\w+):\s*z\.(\w+)\((.*?)\)(.*)/);
+        const trimmedLine = line.trim();
+        const fieldMatch = trimmedLine.match(/(\w+):\s*(z\..+)/);
+
         if (fieldMatch) {
-            const [, name, zodType, params, modifiers] = fieldMatch;
+            const [, name, zodChain] = fieldMatch;
             
-            const isOptional = modifiers.includes('.optional()');
-            const isArray = modifiers.includes('.array()');
+            const isOptional = zodChain.includes('.optional()');
+            const isArray = zodChain.includes('.array()');
             
             // Map Zod types to TypeScript types
             let tsType = 'string';
+            let zodType = 'string';
+            const typeMatch = zodChain.match(/z\.(\w+)/);
+            if (typeMatch) {
+                zodType = typeMatch[1];
+            }
+
             switch (zodType) {
                 case 'string':
                     tsType = 'string';
@@ -70,7 +76,7 @@ export const parseModel = (modelContent: string): ParsedModel => {
             }
 
             if (isArray) {
-                tsType = `${tsType}[]`;
+                tsType = `${tsType.replace('[]','')}[]`;
             }
 
             fields.push({
@@ -79,7 +85,7 @@ export const parseModel = (modelContent: string): ParsedModel => {
                 isOptional,
                 isArray,
                 zodType,
-                validation: params || undefined
+                validation: zodChain
             });
         }
     }
