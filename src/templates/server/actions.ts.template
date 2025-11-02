@@ -1,0 +1,23 @@
+ 
+export const get{{modelNamePascalCase}} = async (id: string): Promise<{{modelNamePascalCase}} | null> => {
+};
+
+export const get{{modelNamePlural}} = async (search: string | undefined, paginate: number, size: number) => {
+    
+};
+
+export const create{{modelNamePascalCase}} = async (data: {{modelNamePascalCase}}) => {
+   
+};
+
+export const update{{modelNamePascalCase}} = async (id: string, data: {{modelNamePascalCase}}) => {
+ 
+};
+
+export const delete{{modelNamePascalCase}} = async (id: string): Promise<string> => {
+}   
+
+export const getTotal{{modelNamePlural}} = async () => { 
+
+};
+ 
