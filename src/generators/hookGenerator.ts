@@ -13,6 +13,7 @@ export const generateHook = (hookName: string, modelName: string, parsedModel: {
             fs.mkdirSync(outputDir, { recursive: true });
         }
 
+  
         // Map each hook to its specific template
         const templateFile = `${hookName}.ts.template`;
         const templatePath = path.join(templatesDir, templateFile);
@@ -22,15 +23,15 @@ export const generateHook = (hookName: string, modelName: string, parsedModel: {
             return;
         }
 
-        const outputPath = path.join(outputDir, `${hookName}.ts`);
+        const outputPath = path.join(outputDir, `${hookName}-${modelName}.ts`);
 
         // Get all name variations for template replacement
         const nameVariations = getModelNameVariations(modelName);
-
+        console.log(`\n📝 Generating hook: ${hookName} for model: ${JSON.stringify(nameVariations)}`);
         const templateContent = fs.readFileSync(templatePath, 'utf-8');
         const renderedContent = renderTemplate(templateContent, { 
+            ...nameVariations,
             hookName, 
-            ...nameVariations, 
             parsedModel 
         });
 

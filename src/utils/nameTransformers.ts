@@ -78,6 +78,10 @@ export interface ModelNameVariations {
     modelNameCamelCasePlural: string;
     modelNameKebabCasePlural: string;
     modelNameUpperCasePlural: string;
+    constantKeyCreate: string;
+    constantKeyUpdate: string;
+    constantKeyDelete: string;
+    constantKeyList: string;
 }
 
 /**
@@ -109,5 +113,9 @@ export const getModelNameVariations = (modelName: string): ModelNameVariations =
         modelNameCamelCasePlural: pluralCamel,
         modelNameKebabCasePlural: pluralKebab,
         modelNameUpperCasePlural: pluralUpper,
+        constantKeyCreate: `KEY_FORM_${upperCase}_CREATE`,
+        constantKeyUpdate: `KEY_FORM_${upperCase}_UPDATE`,
+        constantKeyDelete: `KEY_MODAL_${upperCase}_DELETE`,
+        constantKeyList: `KEY_${upperCase}_LIST`,
     };
 };

@@ -1,34 +1,34 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { InferRequestType, InferResponseType } from "hono";
 import { client } from "@/lib/rpc";
-import { {{CONSTANT_KEY}} } from "../constants";
+import { {{constantKeyDelete}} } from "../constants";
 import { toast } from 'sonner';
 import { useTranslations } from "next-intl";
  
 
-type ResponseType = InferResponseType<typeof client.api.{{RESOURCE_PLURAL}}[":id"]["$delete"], 200>;
-type RequestType = InferRequestType<typeof client.api.{{RESOURCE_PLURAL}}[":id"]["$delete"]>;
+type ResponseType = InferResponseType<typeof client.api.{{modelNamePlural}}[":id"]["$delete"], 200>;
+type RequestType = InferRequestType<typeof client.api.{{modelNamePlural}}[":id"]["$delete"]>;
 
-export const UseDelete{{RESOURCE_SINGULAR}} = () => {
+export const UseDelete{{modelName}} = () => {
   const queryClient = useQueryClient();
   
 
   return useMutation<ResponseType, Error, RequestType>({
     mutationFn: async ({ param }) => {
-      const response = await client.api.{{RESOURCE_PLURAL}}[":id"]["$delete"]({ param });
+      const response = await client.api.{{modelName}}[":id"]["$delete"]({ param });
       
         const result = await response.json();
         if (!response.ok || result.error) {
-            throw new Error(result.error || "Error deleting {{RESOURCE_SINGULAR}}");
+            throw new Error(result.error || "Error deleting {{modelName}}");
         }
         return result;
     },
     onSuccess: () => {
       toast("Deleted successfully!");
-      queryClient.invalidateQueries({ queryKey: [{{CONSTANT_KEY}}] });
+      queryClient.invalidateQueries({ queryKey: [{{constantKeyDelete}}] });
     },
     onError: (error) => {
-      toast.error(error.message || "Error deleting {{RESOURCE_SINGULAR}}");
+      toast.error(error.message || "Error deleting {{modelName}}");
     },
   });
 };

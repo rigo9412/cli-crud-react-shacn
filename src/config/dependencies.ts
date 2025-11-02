@@ -11,11 +11,19 @@ export const REQUIRED_DEPENDENCIES = {
         '@hookform/resolvers',
         'lucide-react',
         'class-variance-authority',
+        "@radix-ui/react-select",
         'clsx',
         'tailwind-merge',
         'dayjs',
         'nuqs',
-        'next-intl'
+        'next-intl',
+        'clsx',
+        'tailwind-merge',
+        'zod',
+        '@tanstack/react-table',
+        "@radix-ui/react-slot",
+        "class-variance-authority",
+        "toast"
     ],
     // React dependencies
     react: [
@@ -24,8 +32,7 @@ export const REQUIRED_DEPENDENCIES = {
     ],
     // Optional but recommended
     optional: [
-        'zod',
-        '@tanstack/react-table',
+      
     ],
 };
 

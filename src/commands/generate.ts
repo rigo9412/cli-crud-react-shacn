@@ -63,14 +63,14 @@ export const generateCRUD = (modelName: string, skipInstall: boolean = false) =>
         generateHook('use-get-by-id', modelName, parsedModel);
  
 
-        console.log('⚛️  Generating React components...');
-        // Generate components
-        generateComponent('columns', modelName, parsedModel);
-        generateComponent('form', modelName, parsedModel);
-        generateComponent('modal-edit', modelName, parsedModel);
-        generateComponent('modal-create', modelName, parsedModel);
-        generateComponent('modal-delete', modelName, parsedModel);
-        generateComponent('table', modelName, parsedModel);
+        // console.log('⚛️  Generating React components...');
+        // // Generate components
+        // generateComponent('columns', modelName, parsedModel);
+        // generateComponent('form', modelName, parsedModel);
+        // generateComponent('modal-edit', modelName, parsedModel);
+        // generateComponent('modal-create', modelName, parsedModel);
+        // generateComponent('modal-delete', modelName, parsedModel);
+        // generateComponent('table', modelName, parsedModel);
     
 
         console.log('📦 Generating TypeScript types...');

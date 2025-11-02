@@ -179,12 +179,6 @@ export function DataTable<T>({data,manualPagination, currentPage = 0, pageSize, 
                   return (
                      <TableHead 
                         key={header.id}
-                        style=\{{
-                        
-                          width: header.column.columnDef.size,
-                          minWidth: header.column.columnDef.minSize,
-                          maxWidth: header.column.columnDef.maxSize
-                        }}
                       >
                       {header.isPlaceholder
                         ? null
@@ -247,7 +241,7 @@ export function DataTable<T>({data,manualPagination, currentPage = 0, pageSize, 
               <SelectValue placeholder={manualPagination ? pageSize ?? 10 : table.getState().pagination?.pageSize ?? 10} />
             </SelectTrigger>
             <SelectContent side="top">
-              {[10, 20, 30, 40, 50].map((size) => (
+              {[50,100,150,200,250,300].map((size) => (
                 <SelectItem key={size} value={`${size}`}>
                   {size}
                 </SelectItem>
