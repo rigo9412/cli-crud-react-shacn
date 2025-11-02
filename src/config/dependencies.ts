@@ -23,7 +23,8 @@ export const REQUIRED_DEPENDENCIES = {
         '@tanstack/react-table',
         "@radix-ui/react-slot",
         "class-variance-authority",
-        "toast"
+        "toast",
+        "@hono/zod-validator"
     ],
     // React dependencies
     react: [

@@ -11,8 +11,6 @@ import { EllipsisVertical } from "lucide-react";
 import useModal from "@/hooks/use-modal";
 import { Button } from "@/components/ui/button";
 import { KEY_FORM_{{modelNameUpperCase}}_UPDATE,KEY_FORM_{{modelNameUpperCase}}_DELETE } from "../constants";
-
-import { ColumnHeaderSort } from "@/components/column-header-sort";
 import { {{modelName}} } from "@/models/{{modelNameKebabCase}}";
 
 const ColumnDropdownMenu = ({ id }: { id: string }) => {

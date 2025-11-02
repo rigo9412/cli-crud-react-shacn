@@ -9,6 +9,7 @@ import { generateComponentBase } from '../generators/componentGeneratorBase';
 import { ensureDependencies } from '../utils/dependencyManager';
 import { getAllRequiredDependencies } from '../config/dependencies';
 import { generateConstants } from '../generators/constantsGenerator';
+import { generateServer } from '../generators/serverGenerator';
 
 export const generateCRUD = (modelName: string, skipInstall: boolean = false) => {
     try {
@@ -59,13 +60,17 @@ export const generateCRUD = (modelName: string, skipInstall: boolean = false) =>
         generateHook('use-delete', modelName, parsedModel);
         generateHook('use-update', modelName, parsedModel);
         generateHook('use-get', modelName, parsedModel);
- 
         generateHook('use-get-by-id', modelName, parsedModel);
+        console.log('🔗 Generating API server...');
+        // Generate server
+        generateServer("actions",modelName, parsedModel);
+        generateServer("routes",modelName, parsedModel);
+        
  
 
         // console.log('⚛️  Generating React components...');
         // // Generate components
-        // generateComponent('columns', modelName, parsedModel);
+        generateComponent('columns', modelName, parsedModel);
         // generateComponent('form', modelName, parsedModel);
         // generateComponent('modal-edit', modelName, parsedModel);
         // generateComponent('modal-create', modelName, parsedModel);

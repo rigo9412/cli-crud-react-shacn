@@ -3,10 +3,10 @@ import path from 'path';
 import { renderTemplate } from '../utils/templateEngine';
 import { getModelNameVariations } from '../utils/nameTransformers';
 
-export const generateHook = (hookName: string, modelName: string, parsedModel: {   name: string; }) => {
+export const generateServer = (hookName: string, modelName: string, parsedModel: {   name: string; }) => {
     try {
-        const templatesDir = path.join(__dirname, '../templates/hooks');
-        const outputDir = path.join(process.cwd(), `src/features/${modelName}/api`);
+        const templatesDir = path.join(__dirname, '../templates/server');
+        const outputDir = path.join(process.cwd(), `src/features/${modelName}/server`);
 
         // Ensure output directory exists
         if (!fs.existsSync(outputDir)) {
@@ -27,7 +27,7 @@ export const generateHook = (hookName: string, modelName: string, parsedModel: {
 
         // Get all name variations for template replacement
         const nameVariations = getModelNameVariations(modelName);
-     
+   
         const templateContent = fs.readFileSync(templatePath, 'utf-8');
         const renderedContent = renderTemplate(templateContent, { 
             ...nameVariations,

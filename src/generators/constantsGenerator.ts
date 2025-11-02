@@ -7,7 +7,7 @@ export function generateConstants(modelName: string) {
     const upperCaseName = nameVariations.modelNameUpperCase;
 
     const content = `
-export const KEY_${upperCaseName} = '${nameVariations.modelNameKebabCase}';
+export const KEY_${upperCaseName}_LIST = '${nameVariations.modelNameKebabCase}';
 export const KEY_FORM_${upperCaseName}_CREATE = 'create-${nameVariations.modelNameKebabCase}';
 export const KEY_FORM_${upperCaseName}_UPDATE = 'update-${nameVariations.modelNameKebabCase}';
 export const KEY_MODAL_${upperCaseName}_DELETE = 'delete-${nameVariations.modelNameKebabCase}';

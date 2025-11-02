@@ -31,12 +31,35 @@ export const parseModel = (modelContent: string): ParsedModel | null => {
     const fieldsContent = objectMatch[1];
     const fields: ParsedField[] = [];
 
-    // Parse each field line
-    const fieldLines = fieldsContent.split(',').filter(line => line.trim() && !line.trim().startsWith('//'));
+    // Parse each field line - need to handle nested parentheses and arrow functions
+    const fieldLines: string[] = [];
+    let currentField = '';
+    let depth = 0;
+    
+    for (let i = 0; i < fieldsContent.length; i++) {
+        const char = fieldsContent[i];
+        
+        if (char === '(') depth++;
+        if (char === ')') depth--;
+        
+        currentField += char;
+        
+        // Split on commas only when we're at depth 0 (not inside parentheses)
+        if (char === ',' && depth === 0) {
+            fieldLines.push(currentField.slice(0, -1).trim());
+            currentField = '';
+        }
+    }
+    
+    // Add the last field
+    if (currentField.trim()) {
+        fieldLines.push(currentField.trim());
+    }
     
     for (const line of fieldLines) {
-        const trimmedLine = line.trim();
-        const fieldMatch = trimmedLine.match(/(\w+):\s*(z\..+)/);
+        if (!line || line.startsWith('//')) continue;
+        
+        const fieldMatch = line.match(/(\w+):\s*(z\..+)/);
 
         if (fieldMatch) {
             const [, name, zodChain] = fieldMatch;
