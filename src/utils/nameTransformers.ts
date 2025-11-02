@@ -107,7 +107,7 @@ export const getModelNameVariations = (modelName: string): ModelNameVariations =
         modelNameUpperCase: upperCase,
         modelNameSnakeCase: snakeCase,
         
-        modelNamePlural: plural,
+        modelNamePlural: pluralCamel,
         modelNamePluralPascalCase: plural,
         modelNamePluralCamelCase: pluralCamel,
         modelNameCamelCasePlural: pluralCamel,

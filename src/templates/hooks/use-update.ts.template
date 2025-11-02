@@ -1,41 +1,41 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { InferRequestType, InferResponseType } from "hono";
 import { client } from "@/lib/rpc";
-import { KEY_{{SINGULAR_CONSTANT}}, KEY_{{CONSTANT_NAME}} } from "../constants";
+import { KEY_{{constantKeyUpdate}}, KEY_{{constantKeyList}} } from "../constants";
 import { toast } from "sonner";
 
 type ResponseType = InferResponseType<
-  (typeof client.api.{{RESOURCE_PATH}})[":id"]["$put"],
+  (typeof client.api.{{modelNamePlural}})[":id"]["$put"],
   200
 >;
 type RequestType = InferRequestType<
-  (typeof client.api.{{RESOURCE_PATH}})[":id"]["$put"]
+  (typeof client.api.{{modelNamePlural}})[":id"]["$put"]
 >;
 
-export const UseEdit{{ENTITY_NAME}} = () => {
+export const UseEdit{{modelName}} = () => {
   const queryClient = useQueryClient();
 
   return useMutation<ResponseType, Error, RequestType>({
     mutationFn: async ({ json, param }) => {
-      const response = await client.api.{{RESOURCE_PATH}}[":id"]["$put"]({
+      const response = await client.api.{{modelNamePlural}}[":id"]["$put"]({
         json,
         param,
       });
       const data = await response.json();
       if (!response.ok || data.error) {
-        throw new Error(data?.error || "Error updating {{ENTITY_NAME}}");
+        throw new Error(data?.error || "Error updating {{modelName}}");
       }
       return data;
     },
     onSuccess: () => {
-      toast("Se ha actualizado {{ENTITY_NAME}}");
-      queryClient.invalidateQueries({ queryKey: [KEY_{{CONSTANT_NAME}}] });
+      toast("Se ha actualizado {{modelName}}");
+      queryClient.invalidateQueries({ queryKey: [{{constantKeyList}}] });
       queryClient.invalidateQueries({
-        queryKey: [KEY_{{SINGULAR_CONSTANT}}],
+        queryKey: [{{constantKeyUpdate}}],
       });
     },
     onError: error => {
-      toast("Error al actualizar {{ENTITY_NAME}}");
+      toast("Error al actualizar {{modelName}}");
     },
   });
 };

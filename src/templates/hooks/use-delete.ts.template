@@ -3,7 +3,7 @@ import { InferRequestType, InferResponseType } from "hono";
 import { client } from "@/lib/rpc";
 import { {{constantKeyDelete}} } from "../constants";
 import { toast } from 'sonner';
-import { useTranslations } from "next-intl";
+ 
  
 
 type ResponseType = InferResponseType<typeof client.api.{{modelNamePlural}}[":id"]["$delete"], 200>;
